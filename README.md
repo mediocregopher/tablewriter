@@ -37,7 +37,7 @@ or if you're using [goat][goat]
     - loc: https://github.com/mediocregopher/tablewriter.git
       type: git
       ref: v0.0.0
-      loc: github.com/mediocregopher/tablewriter
+      path: github.com/mediocregopher/tablewriter
 ```
 
 [api]: http://godoc.org/github.com/mediocregopher/tablewriter
