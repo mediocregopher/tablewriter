@@ -1,3 +1,16 @@
+// Package tablewriter implements a Writer middleman which takes in table data
+// where rows are delimited by newlines and columns by tabs. It outputs this
+// same data but formatted into an actual ascii table, where each column has a
+// specific width that the text is wrapped into.
+//
+// Each cell has both a width and a padding, with the padding applied to the
+// right edge of the cell and contributing to the width of the cell:
+//
+//		|----------------- WIDTH -----------------|
+//		|------ CONTENT ------|----- PADDING -----|
+//
+// Check out the example/ folder of the package for a more in-depth usage
+// example
 package tablewriter
 
 import (
@@ -22,6 +35,7 @@ type colSpec struct {
 	width int
 }
 
+// Constants defining the defaults of a number of values
 const (
 	// The default padding for the bottom edge of each row in the table
 	DEFAULT_BOTTOM_PAD = 1
@@ -103,11 +117,11 @@ func (w *Writer) fillColSpecs() error {
 	return nil
 }
 
-var SPACE = []byte{' '}
-var NEWLINE = []byte{'\n'}
+var space = []byte{' '}
+var newline = []byte{'\n'}
 
 func wrapFill(buf *bytes.Buffer, l, rp int) {
-	fill := bytes.Repeat(SPACE, (l - buf.Len()) + rp)
+	fill := bytes.Repeat(space, (l - buf.Len()) + rp)
 	buf.Write(fill)
 }
 
@@ -122,7 +136,7 @@ func wrappedString(b string, l, rp int) ([]string, error) {
 		} else if len(fields[f]) + buf.Len() <= l {
 			buf.Write([]byte(fields[f]))
 			if 1 + buf.Len() <= l {
-				buf.Write(SPACE)
+				buf.Write(space)
 			}
 			f++
 		} else {
@@ -159,7 +173,7 @@ func (w *Writer) writeRow(row string) (written int, err error) {
 		var n int
 		for i, cellwrapped := range cellswrapped {
 			if linecnt >= len(cellwrapped) {
-				lbuf.Write(bytes.Repeat(SPACE, w.cols[i].width))
+				lbuf.Write(bytes.Repeat(space, w.cols[i].width))
 			} else {
 				lbuf.Write([]byte(cellwrapped[linecnt]))
 				any = true
@@ -175,7 +189,7 @@ func (w *Writer) writeRow(row string) (written int, err error) {
 			if err != nil {
 				return
 			}
-			n, err = w.output.Write(NEWLINE)
+			n, err = w.output.Write(newline)
 			written += n
 			if err != nil {
 				return
@@ -185,7 +199,7 @@ func (w *Writer) writeRow(row string) (written int, err error) {
 			break
 		}
 	}
-	bottomPadding := bytes.Repeat(NEWLINE, w.bottomPad)
+	bottomPadding := bytes.Repeat(newline, w.bottomPad)
 	n, err := w.output.Write(bottomPadding)
 	written += n
 	return written + n, err
