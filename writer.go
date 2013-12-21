@@ -14,25 +14,25 @@
 package tablewriter
 
 import (
+	"bytes"
+	"errors"
 	"fmt"
 	"io"
-	"bytes"
 	"strings"
-	"errors"
 )
 
 type Writer struct {
-	bottomPad int
-	width int
-	cols []colSpec
-	output io.Writer
-	buf *bytes.Buffer
+	bottomPad  int
+	width      int
+	cols       []colSpec
+	output     io.Writer
+	buf        *bytes.Buffer
 	filledcols bool
 }
 
 type colSpec struct {
 	rightPad int
-	width int
+	width    int
 }
 
 // Constants defining the defaults of a number of values
@@ -51,11 +51,11 @@ const (
 // written to (e.g. os.Stdout, a file, or a network connection)
 func New(out io.Writer) *Writer {
 	return &Writer{
-		bottomPad: DEFAULT_BOTTOM_PAD,
-		width: DEFAULT_TABLE_WIDTH,
-		cols: make([]colSpec, 0, 8),
-		output: out,
-		buf: bytes.NewBuffer(make([]byte,0,64)),
+		bottomPad:  DEFAULT_BOTTOM_PAD,
+		width:      DEFAULT_TABLE_WIDTH,
+		cols:       make([]colSpec, 0, 8),
+		output:     out,
+		buf:        bytes.NewBuffer(make([]byte, 0, 64)),
 		filledcols: false,
 	}
 }
@@ -72,7 +72,7 @@ func (w *Writer) SetTableWidth(wid int) {
 }
 
 // Adds a column to the table, given the column's padding on the right edge and
-// total width (including padding). If rightPad is -1 then the default is used, 
+// total width (including padding). If rightPad is -1 then the default is used,
 // if width is -1 then the column's size is calculated from the unaccounted for
 // width in the table divided by the number of columns who don't specify their
 // width
@@ -106,14 +106,14 @@ func (w *Writer) fillColSpecs() error {
 		// Go through and set the widths for all the columns that need it. We
 		// only want to give the leftoverExtra (the remainder from taking the
 		// average) to the final unspecified column in the table.
-		for i := len(w.cols)-1; i >= 0; i-- {
+		for i := len(w.cols) - 1; i >= 0; i-- {
 			if w.cols[i].width < 0 {
 				w.cols[i].width = leftoverPer + leftoverExtra
 				leftoverExtra = 0
 			}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -121,21 +121,21 @@ var space = []byte{' '}
 var newline = []byte{'\n'}
 
 func wrapFill(buf *bytes.Buffer, l, rp int) {
-	fill := bytes.Repeat(space, (l - buf.Len()) + rp)
+	fill := bytes.Repeat(space, (l-buf.Len())+rp)
 	buf.Write(fill)
 }
 
 func wrappedString(b string, l, rp int) ([]string, error) {
 	fields := strings.Fields(b)
-	buf := bytes.NewBuffer(make([]byte,0,(l+rp)*4))
+	buf := bytes.NewBuffer(make([]byte, 0, (l+rp)*4))
 	ret := make([]string, 0, 3)
 
-	for f := 0;f < len(fields); {
+	for f := 0; f < len(fields); {
 		if len(fields[f]) > l {
 			return ret, fmt.Errorf("Word '%s' too big for its cell", fields[f])
-		} else if len(fields[f]) + buf.Len() <= l {
+		} else if len(fields[f])+buf.Len() <= l {
 			buf.Write([]byte(fields[f]))
-			if 1 + buf.Len() <= l {
+			if 1+buf.Len() <= l {
 				buf.Write(space)
 			}
 			f++
@@ -168,7 +168,7 @@ func (w *Writer) writeRow(row string) (written int, err error) {
 		}
 	}
 	lbuf := new(bytes.Buffer)
-	for linecnt := 0;;linecnt++ {
+	for linecnt := 0; ; linecnt++ {
 		any := false
 		var n int
 		for i, cellwrapped := range cellswrapped {
@@ -232,11 +232,10 @@ func (w *Writer) Write(b []byte) (written int, err error) {
 		if len(row) == 0 {
 			return
 		}
-		n, err = w.writeRow(strings.TrimRight(row,"\n"))
+		n, err = w.writeRow(strings.TrimRight(row, "\n"))
 		written += n
 		if err != nil {
 			return
 		}
 	}
 }
-

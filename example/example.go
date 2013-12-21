@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/mediocregopher/tablewriter"
 	"os"
 	"strings"
-	"github.com/mediocregopher/tablewriter"
-
 )
 
 func main() {
@@ -21,14 +20,14 @@ func main() {
 	t.AddColumn(-1, 75)
 
 	// Add a column with padding of 3 and a width of 25 chars
-	t.AddColumn(3,  25)
+	t.AddColumn(3, 25)
 
 	// Add a column with padding of 10 and an automatically specified width
 	t.AddColumn(10, -1)
 
 	// Add a column with no padding on the right (since its the rightmost column
 	// the padding isn't necessary) and an automatically specified width
-	t.AddColumn(0,  -1)
+	t.AddColumn(0, -1)
 
 	// The automatically specified widths are calculated by taking the leftover
 	// width (200 - (75 + 25) = 100) and dividing it by the number of columns
