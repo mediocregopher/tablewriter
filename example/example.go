@@ -47,3 +47,24 @@ func main() {
 		}
 	}
 }
+
+// The final output on stdout looks like this:
+//
+// o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o  o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+// o o o o o o o o o o o o o o o                                              o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+//                                                                            o o o o o o o o o o o    o o o o o o o o o o o o                           o o
+//                                                                            o o o o o o o o o o o
+//                                                                            o o o o o o o o
+//
+// o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o  o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+// o o o o o o o o o o o o o o o                                              o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+//                                                                            o o o o o o o o o o o    o o o o o o o o o o o o                           o o
+//                                                                            o o o o o o o o o o o
+//                                                                            o o o o o o o o
+//
+// o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o o  o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+// o o o o o o o o o o o o o o o                                              o o o o o o o o o o o    o o o o o o o o o o o o o o o o o o o o           o o o o o o o o o o o o o o o o o o o o o o o o o
+//                                                                            o o o o o o o o o o o    o o o o o o o o o o o o                           o o
+//                                                                            o o o o o o o o o o o
+//                                                                            o o o o o o o o
+//
